@@ -1,0 +1,32 @@
+.product_main {
+    width: 290px;
+    height: 410px;
+    
+}
+
+.product_main:hover {
+    transform: scale(1.05);
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
+}
+
+
+.product_image > img {
+    width: 140px;
+    height: 140px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.product_bottom {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.price_rating_container {
+    display: flex;
+    justify-content: space-between;
+    width: 90%;
+    align-items: center;
+    margin: 0px 10px;
+}
