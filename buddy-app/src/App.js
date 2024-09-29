@@ -11,6 +11,8 @@ import MyFeed from './components/social/MyFeed.js'
 import Friends from './components/friends/Friends.js';
 import MyChatEmpty from './components/chat/MyChatEmpty.js';
 import Requests from './components/friends/Requests.js';
+import Login from './components/authentication/Login.js';
+import Redirect from './components/authentication/Redirect.js';
 
 function App() {
   return (
@@ -18,6 +20,7 @@ function App() {
       <Router>
         <Routes>
           <Route path="/" element={<PrivateRoute component={Home} />} />
+          <Route path="/login-success" element={<PrivateRoute component={Redirect} isRedirect={true} />} />
           <Route path="/users" element={<PrivateRoute component={UsersSmart} />} />
           <Route path="/checkout" element={<PrivateRoute component={EmptyCheckout}/>} />
           <Route path="/baskets" element={<PrivateRoute component={EmptySharedBasket} />} />
@@ -27,6 +30,7 @@ function App() {
           <Route path="/dashboard" element={<PrivateRoute component={Friends} />} />
           <Route path="/chat" element={<PrivateRoute component={MyChatEmpty} />} />
           <Route path="/requests" element={<PrivateRoute component={Requests} />} />
+          <Route path="/login" element={<PrivateRoute component={Login} />} />
         </Routes>
       </Router>
     </div>

@@ -1,4 +1,4 @@
-const { sendMessage, getDirectConversations, getRecentUsers } = require("../../modals/messages.model");
+const { sendMessage, getDirectConversations, getRecentUsers, createGroup } = require("../../modals/messages.model");
 
 
 async function httpSendMessage(req, res) {
@@ -35,7 +35,7 @@ async function httpGetRecentUsers(req, res) {
         const messages = await getRecentUsers(userId);
         return res.status(200).json(messages);
     } catch (error) {
-        return res.status(500).send(error);
+        return res.status(500).send(error); 
     }
 }
 
@@ -60,9 +60,23 @@ async function httpGetGroupConversations(req, res) {
 }
 
 
+async function httpCreateGroup(req, res) {
+    const { members, groupName } = req.params;
+    try {
+        const group = {
+            members,
+            groupName
+        };
+        await createGroup(group);
+    } catch(error) {
+        return res.status(500).json({error: 'Unable to create a group'});
+    }
+}
+
 module.exports = {
     httpSendMessage,
     httpGetDirectConversations,
     httpGetGroupConversations,
-    httpGetRecentUsers
+    httpGetRecentUsers,
+    httpCreateGroup
 }

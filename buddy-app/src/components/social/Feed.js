@@ -3,13 +3,28 @@ import '../../css/Feed.css'
 import MessageSender from './MessageSender'
 import Post from './Post'
 import StoryReel from './StoryReel'
+import { httpGetAllPosts } from '../../services/facade.service'
 // import db from '../../firebase'
 // import {useAuth} from '../../contexts/AuthContext';
 
 function Feed() {
     // const {currentUser} = useAuth();
+    useEffect(() => {
+      const getPosts = async () => {
+          try {
+              const fetchedPosts = await httpGetAllPosts();
+              setPosts(fetchedPosts);
+          } catch (error) {
+              console.error('Failed to fetch products', error);
+          }
+      };
+  
+      console.log('Effect triggered');
+      getPosts();
+  }, []);
+  
     const currentUser = {
-        uid: 1,
+        uid: 1, 
     };
     const [posts, setPosts] = useState([
         {
@@ -75,17 +90,17 @@ function Feed() {
             <StoryReel />
             <MessageSender />
 
-            {posts.map(({ id, post }) => (
+            {posts.map((post) => (
                 <Post
-                    key={id}
-                    postId={id}
+                    key={post._id}
+                    postId={post._id}
                     profilePic={post.profilePic}
-                    message={post.message}
-                    timestamp={post.timestamp}
-                    username={post.username}
-                    image={post.image}
-                    userId={currentUser.uid}
-                    likes={post.likes}
+                    message={post.content}
+                    timestamp={post.createdAt}
+                    username={post.userName}
+                    image={post.image ? post.image : ''}
+                    userId={currentUser.userId}
+                    likes={0}
                 />
             ))}
         </div>

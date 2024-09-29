@@ -4,15 +4,12 @@ import { Avatar } from '@mui/material';
 import VideocamIcon from '@mui/icons-material/Videocam';
 import PhotoLibraryIcon from '@mui/icons-material/PhotoLibrary';
 import InsertEmoticonIcon from '@mui/icons-material/InsertEmoticon';
-// import {useAuth} from '../../contexts/AuthContext';
-// import { storage } from '../../firebase'
-// import db from '../../firebase'
-// import firebase from 'firebase'
+import { httpCreateNewPost } from '../../services/facade.service';
 
 function MessageSender() {
     // const {currentUser} = useAuth();
     const currentUser = {
-        uid: 'user123',
+        uid: '66e16475863b37a31b18a136',
         displayName: 'John Doe',
         photoURL: 'https://randomuser.me/api/portraits/men/1.jpg',
         email: 'john.doe@example.com'
@@ -27,53 +24,22 @@ function MessageSender() {
     }
 
     const handleSubmit = (event) => {
-        event.preventDefault()
+        event.preventDefault();
+        if (image) {
+            const post = {
+                content: input,
+                userId: currentUser.uid,
+                image: image
+            };
+            httpCreateNewPost(post);
+        } else {
+            const post = {
+                content: input,
+                userId: currentUser.uid,
+            };
+            httpCreateNewPost(post);
+        }
 
-        // if (image === '') {
-        //     db.collection("posts").add({
-        //         message: input,
-        //         timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-        //         profilePic: currentUser.photoURL,
-        //         username: currentUser.displayName,
-        //         image: image,
-        //         likes: 0,
-        //         userId: currentUser.uid
-        //     })
-        // } else {
-        //     const uploadTask = storage.ref(`images/${image.name}`).put(image);
-        //     uploadTask.on(
-        //         "state_changed",
-        //         (snapshot) => {
-        //             const progress = Math.round(
-        //                 (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-        //             );
-        //             setProgress(progress);
-        //         },
-        //         (error) => {
-        //             console.log(error);
-        //             alert(error.message);
-        //         },
-        //         () => {
-        //             storage
-        //                 .ref("images")
-        //                 .child(image.name)
-        //                 .getDownloadURL()
-        //                 .then(url => {
-        //                     db.collection("posts").add({
-        //                         message: input,
-        //                         timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-        //                         profilePic: currentUser.photoURL,
-        //                         username: currentUser.displayName,
-        //                         image: url,
-        //                         likes: 0,
-        //                         userId: currentUser.uid
-        //                     });
-        //                     setProgress(0);
-        //                     setImage(null);
-        //                 })
-        //         }
-        //     )
-        // }
         setInput("");
         setImgUploadConfirm('');
     }

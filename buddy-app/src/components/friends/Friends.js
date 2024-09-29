@@ -11,6 +11,7 @@ import emailIcon from '../../resources/email.png';
 import likeIcon from '../../resources/like-16x16(1).png';
 import Post from "../social/Post";
 import Avatar from '@mui/material/Avatar';
+import { httpGetUserFriends, httpGetUserPosts } from "../../services/facade.service";
 
 
 function Friends({id, emailAdd, gender, name, profilePic}) {
@@ -69,38 +70,52 @@ function Friends({id, emailAdd, gender, name, profilePic}) {
     const [phoneNumber, setPhoneNumber] = useState('')
     const [requests, setRequests] = useState(0);
 
+    // const currentUser = {
+    //   uid: 'user123',
+    //   displayName: 'John Doe',
+    //   photoURL: 'https://randomuser.me/api/portraits/men/1.jpg',
+    //   email: 'john.doe@example.com'
+    // };
+
     const currentUser = {
-      uid: 'user123',
-      displayName: 'John Doe',
-      photoURL: 'https://randomuser.me/api/portraits/men/1.jpg',
-      email: 'john.doe@example.com'
-    };
+      "_id": "66e16475863b37a31b18a136",
+      "email": "emma@example.com",
+      "__v": 0,
+      "friends": [],
+      "posts": [],
+      "profilePic": "https://randomuser.me/api/portraits/women/3.jpg",
+      "userName": "emma_watson",
+      "bucketId": null
+    }
     
 
     useEffect(() => {
-        // if (currentUser) {
-        //     db.collection("users").doc(currentUser.uid).get().then(docc => {
-        //         const data = docc.data();
-        //         setLength(data.noItems);
-        //         setPhoneNumber(data.phoneNumber);
-        //         setGender(data.gender)
-        //     })
-        //     db.collection("users").doc(currentUser.uid).collection("friendRequests").get().then(snapshot => {
-        //       setRequests(snapshot.size);
-        //   })
-        // }
-    })
+      const getPosts = async () => {
+          try {
+              const fetchedPosts = await httpGetUserPosts(currentUser._id);
+              setPosts(fetchedPosts);
+          } catch (error) {
+              console.error('Failed to fetch posts', error);
+          }
+      };
+  
+      console.log('Effect triggered');
+      getPosts();
+  }, []);
 
-    useEffect(() => {
-        // db.collection("users").doc(currentUser.uid).collection("friends")
-        // .onSnapshot((snapshot) => 
-        //     setFriends(snapshot.docs.map((doc) => ({
-        //         friendId: doc.id,
-        //         friend: doc.data()
-        //     })))
-        // );
-    // eslint-disable-next-line
-    }, [])
+  useEffect(() => {
+    const getFriends = async () => {
+        try {
+            const fetchedFriends = await httpGetUserFriends(currentUser._id);
+            setPosts(fetchedFriends);
+        } catch (error) {
+            console.error('Failed to fetch friends', error);
+        }
+    };
+
+    console.log('Effect triggered');
+    getFriends();
+}, []);
 
     useEffect(() => {
       // db.collection('posts')
@@ -146,19 +161,19 @@ function Friends({id, emailAdd, gender, name, profilePic}) {
             </div>
       </div>
       <div className="feed">
-      {posts.map(({ id, post }) => (
-          <Post
-              key={id}
-              postId={id}
-              profilePic={post.profilePic}
-              message={post.message}
-              timestamp={post.timestamp}
-              username={post.username}
-              image={post.image}
-              userId={currentUser.uid}
-              likes={post.likes}
-          />
-      ))}
+      {posts.map((post) => (
+                <Post
+                    key={post._id}
+                    postId={post._id}
+                    profilePic={post.profilePic}
+                    message={post.content}
+                    timestamp={post.createdAt}
+                    username={post.userName}
+                    image={post.image ? post.image : ''}
+                    userId={currentUser.userId}
+                    likes={0}
+                />
+            ))}
       </div>
       </div>
       <div className="col-md-4">

@@ -59,6 +59,10 @@ function Header({ length, noRequests }) {
         navigate(path);
     };
 
+    const chatApp = () => {
+        window.location.href = 'https://localhost:8000/chat';
+    }
+
     return (
         <div className="header__social">
             <div className="header__left">
@@ -139,7 +143,7 @@ function Header({ length, noRequests }) {
                     </div>
                 </IconButton>
                 <Tooltip title="Chat" placement="bottom" open={tooltipOpen.chat} onMouseEnter={toggleTooltip('chat')} onMouseLeave={toggleTooltip('chat')}>
-                    <IconButton onClick={goTo('/chat')}>
+                    <IconButton onClick={chatApp}>
                         <div className="header__option2">
                             <ForumIcon id="chat" style={{ outline: 'none' }} />
                         </div>
